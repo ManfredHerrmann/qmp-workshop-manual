@@ -1,0 +1,753 @@
+#+TITLE: quick Mesh project (qMp.cat) workshop
+#+AUTHOR: guifi.net community
+
+* Introduction
+The basic material to deploy qMp cloud networks.
+
+The radios used have Power over Ethernet (PoE) of 24V, it means that
+the electrical power and data of the radio goes through an ethernet
+cable. The blue cable in figure [[fig:poe]] is what is deployed into an
+outdoor place (typically rooftop or a balcony) where the qMp devices
+will be installed and takes the POE interface in PoE injector. The
+other interface in the PoE injector is LAN [fn:46] and can be placed
+to a PC or a switch/router if it is wanted to connect more
+PC's. Finally, the PoE injector requires standard electrical
+power. *Warning*: a PoE connection to a device that is not prepared to
+work with PoE 24V, for example an ethernet interface of a computer,
+can produce malfunction of its ethernet interface.
+
+#+CAPTION: PoE network diagram
+#+NAME: fig:poe
+[[./img/general/poe.jpg]]
+
+* Installer basics: Items
+- Outdoor cable and rj45 connectors (sold separately) \\
+  The cable should be for outdoor to resist the weather. 
+  - UTP cable: cable without protection. But sometimes it is enough.
+  - FTP cable (recommended): cable with basic protection. ESD
+       prevention [fn:13]. The difference is that the cable has
+       ground.
+- Crimp tool: to join rj45 connector to cable.
+- Cable tester (recommended): a unexpensive one can help to work quickly and
+  reliably in the installation of cable.
+- Cable cutter: To take a segment of cable for a installation. Note:
+                  UTP cable is easier to cut than FTP.
+- Cable tie: To lock the cable & radio to a mast and other
+  cables.
+- Shopping cart or traveling bag with wheels (recommended): carry
+     all the items needed.
+- Measure meter: measure accurately the length of cable needed
+                   (optional).
+* Installer basics: 5GHz devices
+The devices selected are working in the 5 GHz band because 2.4GHz is widely
+used in cities and have more interferences. They are from Ubiquiti
+manufacturer and compatible with qMp firmware.
+
+ - Unexpensive :: less than 100 euro.
+
+   - NanoStation Loco M5 (NSLM5) :: Short distances (less than
+        1km). The connection with the other candidate node has an
+        acceptable connection and there is no need to increase the
+        power signal of wifi. It uses the same firmware as
+        NanostationM5.
+   - Nanostation M5 (NSM5) :: [fn:14] If is needed a better connection to
+        specific node.
+   - NanoBeam M5 different models :: [fn:18] When there is a long
+        distance connection (more than 1km). Use the same firmware as
+        NanostationM5. Is the evolution of NanoBridge M5 that is now
+        deprecated.
+
+ - Expensive :: more than 100 euro.
+
+   - Rocket M5  :: [fn:15] Base station to put different kind of antennas.
+     - Rocket M5 + Sector Antenna (S) 90 or 120 deg :: [fn:19] when the need
+          is to cover a sector region with constant coverage of 90 or
+          120 deg. There are High Gain (HG) and Mid Gain (MG) versions.
+     - Rocket M5 + Dish (D) :: [fn:17] Longest distances (50km link [fn:16]).
+
+Summary of some relevant information at Table [[tab:devspec]]:
+#+CAPTION: Devices specifications
+#+NAME: tab:devspec
+| Devices         | Gain (dBi)     | Beamwidth (deg)     | Proc. | RAM  | Flash |
+|                 |                | Hpol/Vpol/Elevation |       | (MB) |  (MB) |
+|-----------------+----------------+---------------------+-------+------+-------|
+| NSLM5           | 13             | 45/45/45            | 24KC  | 32 S |     8 |
+| NSM5            | 16             | 43/41/15            | 24KC  | 32 S |     8 |
+| NBM5            | 16, 19, 22, 25 | see on datasheet    | 74KC  | 64 D |     8 |
+| RM5 S90 MG, HG  | 17, 20         | see on datasheet    | 24KC  | 64 S |     8 |
+| RM5 S120 MG, HG | 16, 19         | see on datasheet    | 24KC  | 64 S |     8 |
+| RM5 D           | 30, 34         | see on datasheet    | 24KC  | 64 S |     8 |
+
+- Proc :: Processor Specs.
+  - 24KC :: Atheros MIPS 24KC, 400MHz
+  - 74KC :: Atheros MIPS 74KC, 560MHz
+- RAM :: Type of RAM:
+  - S :: SDRAM
+  - D :: DDR2
+* Flash qMp node
+Steps to flash a device with qMp firmware. It is assumed a GNU/Linux
+Ubuntu/Debian computer:
+1. Download the *Factory image* [fn:7] for a supported device that
+   has the factory operating system [fn:8]. *Sysupgrade image* is for
+   OpenWRT or qMp nodes that want to upgrade. *Guifi image* has better
+   integration with guifi.net web.
+2. Rename the downloaded file to =qmp.bin=.
+3. Download the tftp packets with the system's repository. In
+   terminal: =$ sudo apt-get install tftp-hpa=.
+4. Disconnect the internet connection.
+5. Open a terminal and put:
+   : $ ping 192.168.1.20
+   It will help to know when the antenna is in the reset mode.
+6. Connect the equipments as shown in Figure [[fig:flashdiagram]].
+   #+CAPTION: Network Diagram to Flash Antenna
+   #+NAME: fig:flashdiagram
+   [[./img/general/flashdiagram.jpg]]
+7. Configure the network following one of these options:
+   1. *GUI option*: configure in the preferred network manager a
+      ethernet network with static IP in the computer to connect to
+      the device: \\
+      IP: 192.168.1.10 \\
+      Subnet: 192.168.1.100 \\
+      Gateway: 192.168.1.1
+   2. *Terminal option*: 
+      : $ sudo ip a a 192.168.1.25/24 dev eth0
+8. Reset the device following one of these options:
+   1. *Reset in the antenna option*: Disconnect the interface of the
+      antenna. Remove the antenna's lid. With one hand take an object
+      with round toe, press and hold reset button (Figure
+      [[fig:resetant]]) while with the other hand insert the ethernet
+      cable to the interface in antenna.
+      #+CAPTION: Reset antenna
+      #+NAME: fig:resetant
+      [[./img/general/reset-antenna.jpg]]
+   2. *Reset in the PoE injector option*: Check if the device has
+      PoE (Figure [[fig:resetpoe]]). Disconnect the POE interface in PoE
+      injector. With one hand take an object with round toe, press and
+      hold reset button while with the other hand insert the ethernet
+      cable to the POE interface in PoE injector.
+      #+CAPTION: Reset power injector
+      #+NAME: fig:resetpoe
+      [[./img/general/reset-injector.jpg]]
+9. Observe if the antenna start the reset mode needed for continue:
+   - *Antenna led option*: Wait until the led 1 and 3 change to 2 and
+     4 cyclically. With this video resource it will give an idea of
+     time and led colors involved in the process [fn:9].
+   - *PC screen option*: the ping starts responding. The output of the
+     =ping 192.168.1.20= should be something like:
+    : 64 bytes from X: icmp_req=X ttl=X time=X ms
+10. If is in reset mode stop pressing the reset button and put the
+    device in a stable place.
+11. In a new terminal window, go where is the downloaded firmware
+    =qmp.bin=:
+    : cd /path/to/the/qmpbin_folder
+    And there, execute:
+    : $ tftp 192.168.1.20
+    : $ mode octet
+    : $ trace
+    : $ put qmp.bin
+    [ Transmission process ]
+    : $ quit
+12. After about 5 minutes, the 4th led of the ramp (the most right led,
+    Figure [[fig:ledsantenna]]) is on, and not blinking. This is the moment to go the
+    next step.
+    #+CAPTION: Led system in the antenna
+    #+NAME: fig:ledsantenna
+    [[./img/general/blinkingled.jpeg]]
+13. Reconfigure the network to do a DHCP client in ethernet port
+    (Automatic IP) and try to connect again the PC with the device.
+14. Check that the device responds to ping:
+    : $ ping 172.30.22.1
+    This is the fixed IP address in roaming mode. \\
+    More general approach is to get the gateway address:
+    : $ ip r | grep default | cut -f3 -d' '
+    Open a web browser and check if this web can be accessed
+    (*Warning* admin.qmp it will only work if the PC is connected to
+    the device via DHCP):
+    : http://admin.qmp
+    alternatives:
+    : http://172.30.22.1
+    : http://<gateway_ip>
+15. Login access is
+    user: root \\
+    password: 13f
+
+Other references [fn:10] [fn:11] [fn:12]
+* qMp basics: Testing operations
+Figure [[fig:wan-status-on]] shows the first screen obtained when there is
+a log in a qMp node.
+
+#+CAPTION: First screen
+#+NAME: fig:wan-status-on
+[[./img/qMp-basics-scrot/status-wan_status.png]]
+
+#+BEGIN_LATEX
+\noindent
+#+END_LATEX
+To come back to this screen, go to the menu clicking at:
+: qMp/Mesh / Status
+alternatively:\\
+http://admin.qmp/cgi-bin/luci/qmp/status
+
+When there is a scroll down action, appears Associated
+Stations. Figure [[fig:associated-stations]] has the wifi links with other
+qMp nodes and what signal associated (dBm). The guifi.net good
+practices says that the backbone should be better than
+-75dBm [fn:2]. In that figure there are different kind of links with
+different qualities. Good quality means high parameters of: dBm, RX
+Rate, TX Rate [bandwidth (Mbps)] and MCS codification (the number).
+
+These qualities refer to connection to different nodes, only is
+shown the MAC address. But the MAC is enough to identify a node,
+because the last four characters are appended in every hostname of the
+network. Later, it will be known how to navigate to different nodes in the
+network.
+
+#+CAPTION: Associated stations
+#+NAME: fig:associated-stations
+[[./img/qMp-basics-scrot/status-associated-nodes.png]]
+
+Another measure of quality is shown on Figure [[fig:links-node]]. This is the
+quality in terms of the protocol bmx6. A 0-100 rating in terms of
+reception and transmission (rx/tx).
+
+#+BEGIN_LATEX
+\noindent
+#+END_LATEX
+To arrive there, go to the menu clicking at:
+: qMp/Mesh / Mesh / Links
+alternatively:\\
+http://admin.qmp/cgi-bin/luci/qmp/mesh/links
+
+#+CAPTION: Links of the node
+#+NAME: fig:links-node
+[[./img/qMp-basics-scrot/links.png]]
+
+Also, can be made a bandwidth test between nodes. Figure [[fig:bw-test]]
+perform a TCP connection benchmark and give the Mbps between the node
+and other possible destinations. Wait until a single test ends to know
+all the bandwidth in the link or route.
+
+#+BEGIN_LATEX
+\noindent
+#+END_LATEX
+To arrive there, go to the menu clicking at:
+: qMp/Mesh / Tools
+alternatively:\\
+http://admin.qmp/cgi-bin/luci/qmp/tools
+
+#+CAPTION: Bandwidth Test
+#+NAME: fig:bw-test
+[[./img/qMp-basics-scrot/test-bandwidth.png]]
+
+Figure [[fig:wifi-signal-rt]]. After the general scan, when there is a
+node candidate to do a durable connection, there is the need to
+analyse the quality of this link in real-time. This helps to select an
+optimised place to lock the antenna in the installation.
+
+#+BEGIN_LATEX
+\noindent
+#+END_LATEX
+To arrive there, go to the menu clicking at:
+: OpenWRT / Status / Realtime Graphs / Wireless
+alternatively:\\
+http://admin.qmp/cgi-bin/luci/admin/status/realtime/wireless
+
+#+CAPTION: Strength of the best wifi signal in real-time
+#+NAME: fig:wifi-signal-rt
+[[./img/qMp-basics-scrot/realtime_wifi_link.png]]
+
+The situation could be that cannot be a connection to the node to the
+network. Perhaps it is in another channel. Figure [[fig:find-qmp]] shows a
+wifi scan. qMp always use BSSID: =02:CA:FF:EE:BA:BE=, in Mode
+=Ad-Hoc=. These are two solid references to find other qMp networks. In
+the figure there are two qMp networks in channels: 140 and 132.
+
+#+BEGIN_LATEX
+\noindent
+#+END_LATEX
+To arrive there, go to the menu clicking at:
+: OpenWRT / Network / Wifi / "Scan"
+alternatively:\\
+http://admin.qmp/cgi-bin/luci/admin/network/wireless
+and click Scan.
+
+#+CAPTION: Wifi scan: find qMp network
+#+NAME: fig:find-qmp
+[[./img/qMp-basics-scrot/wifi_scan_find_qmp.png]]
+
+If there is a design of a new qMp network it is important to select a
+channel that is not used. Figure [[fig:interference]] shows how another AP
+is also using channel 140.
+
+#+CAPTION: Wifi scan interference
+#+NAME: fig:interference
+[[./img/qMp-basics-scrot/wifi_scan_interference.png]]
+
+Figure [[wifi-channel-power]] shows where to change wifi parameters as
+wifi channel and power signal to the qMp network. By default, qMp uses
+17, but it can be increased to 22 (max value).
+
+Use the transmission power of wifi signal with care, in the interested
+network is a communication signal, but for the other networks it is
+another noise in the environment that make its communications more
+difficult.
+
+#+BEGIN_LATEX
+\noindent
+#+END_LATEX
+To arrive there, go to the menu clicking at:
+: OpenWRT / Node configuration / Wireless Settings
+alternatively:\\
+http://admin.qmp/cgi-bin/luci/qmp/configuration/wifi/
+
+#+CAPTION: Wifi: Channel & Power
+#+NAME: fig:wifi-channel-power
+[[./img/qMp-basics-scrot/wifi-channel-power.png]]
+
+Figure [[fig:tunnels]] (marked as red) shows that there is a WAN Node, the
+node makes announcement of this network as =Internet=. If can be
+arrived there, it means there is an internet connection, try it with a
+browser. Also could be interesting to perform additional bandwidth
+tests [fn:3] [fn:4] [fn:5] [fn:6].
+
+But perhaps the WAN node cannot be accessed, or there is not a WAN
+node in the network. Can be checked if there is a tunnel to Internet.
+
+In the same view, can be browsed for a Border Node. Figure
+[[fig:tunnels]] shows it (marked as blue), the node makes announcement of
+the network =10.0.0.0/8=, it means, access to the rest of guifi.net
+
+#+BEGIN_LATEX
+\noindent
+#+END_LATEX
+To arrive there, go to the menu clicking at:
+: qMp/Mesh / Mesh / Tunnels
+alternatively:\\
+http://admin.qmp/cgi-bin/luci/qmp/Mesh/Tunnels
+
+#+CAPTION: Tunnels
+#+NAME: fig:tunnels
+[[./img/qMp-basics-scrot/tunnels.png]]
+
+* qMp basics: Basic install and maintaining
+Figure [[fig:quick-setup]], this is the final setup when the node is
+prepared to be in testing phase.
+
+In guifi.net web page, after adding the device, it is received a unique ip
+address, and is needed a =255.255.255.244= netmask. Use the same name
+as in the web or the network organization page.
+
+#+BEGIN_LATEX
+\noindent
+#+END_LATEX
+To arrive there, go to the menu clicking at:
+: qMp/Mesh / Node configuration / qMp easy setup
+alternatively:\\
+http://admin.qmp/cgi-bin/luci/qmp/configuration/easy_setup/
+
+#+CAPTION: Quick setup
+#+NAME: fig:quick-setup
+[[./img/qMp-basics-scrot/quick_setup.png]]
+
+Figure [[fig:backup]]: When the node is working fine is important to make
+a backup of the configuration. It is not recommended to upgrade the
+node using this menu for the qMp firmware.
+
+#+BEGIN_LATEX
+\noindent
+#+END_LATEX
+To arrive there, go to the menu clicking at:
+: OpenWRT / System / "Backup/Flash Firmware"
+alternatively:\\
+http://admin.qmp/cgi-bin/luci/admin/system/flashops
+
+#+CAPTION: Backup
+#+NAME: fig:backup
+[[./img/qMp-basics-scrot/backup-new-firmware.png]]
+
+For upgrade the node at the moment it is only possible via
+terminal. Do a login with ssh session:
+: ssh root@admin.qmp
+password: 13f \\
+From this point, there are three methods:
+1. Automatic upgrade (with internet connection in the node).
+   : qmpcontrol upgrade
+2. Upgrade with a link (with internet connection in the node).
+   : qmpcontrol upgrade "http://...qmp.bin"
+   It means the URL where is located the qMp firmware, remember that
+   can be found all the firmwares supported here: http://fw.qmp.cat
+3. Upgrade with a local file (without internet connection in the node).
+   1. Put the file inside qMp node, open a new terminal and put
+      : scp qmp.bin root@admin.qmp:/tmp
+      It will ask for the password
+   2. With the existing ssh session opened before, or a new one,
+      login with ssh and:
+      : qmpcontrol upgrade "/tmp/qmp.bin"
+Confirm to continue with the upgrade process and wait until it is finished.
+
+Note: qMp only save common settings after the upgrade, concretely:
+: # cat /etc/config/qmp | grep preserve
+
+For other file changes, perform a backup before the upgrade.
+* qMp basics: Navigating inside the network
+Figure [[fig:net-nodes]] shows a screen that presents all the qMp nodes
+conforming the cloud. By clicking the blue spherical icon to the left
+of each node it is possible to obtain additional information about
+them. In particular, the network address announced by one node can be
+found under the =Gateways announced= label, and the IP of the node in
+the first address of that network. In the example shown in the figure,
+the network address is =10.1.56.96= and the IP of the qMp node is
+=10.1.56.97=.
+
+#+BEGIN_LATEX
+\noindent
+#+END_LATEX
+To arrive there, go to the menu clicking at:
+: qMp/Mesh / Mesh / Nodes
+alternatively:\\
+http://admin.qmp/cgi-bin/luci/qmp/mesh/nodes
+
+#+CAPTION: IP address of nodes
+#+NAME: fig:net-nodes
+[[./img/qMp-basics-scrot/net-of-nodes.png]]
+
+Figure [[fig:graph-network]] is the graph that shows the nodes, the edges
+with the bmx6's quality rate show how each are connected.
+
+#+BEGIN_LATEX
+\noindent
+#+END_LATEX
+To arrive there, go to the menu clicking at:
+: qMp/Mesh / Mesh / Graph
+alternatively:\\
+http://admin.qmp/cgi-bin/luci/qmp/mesh/graph
+
+#+CAPTION: Graph of the network
+#+NAME: fig:graph-network
+[[./img/qMp-basics-scrot/graph.png]]
+* Proposed qMp cloud node designs: WAN node design
+To build a WAN node, figure [[fig:wan-gen]] shows how the qMp node should
+be connected to the /mesh/ network (through wifi via bmx6 routing) and
+Internet (through ethernet to ISP [fn:50] router via DCHP client).
+
+It is recommended to use the device Nanostation M5 because it has two
+ethernet interfaces (eth0, eth1). With one can be made a DHCP server
+to connect to the qMp node with a laptop. And for the other ethernet,
+a DHCP client to the ISP router.
+
+In the case that there is a Nanostation Loco M5, it only has one
+ethernet (eth0 [fn:51]). It will be for the DHCP client to the ISP
+router and it means that there is no DHCP server to directly connect
+to the qMp node. An easy solution is that the connection to the qMp
+node could be possible with another qMp node in the network (it is
+being used the wifi interface).
+
+#+CAPTION: Network diagram generic WAN node
+#+NAME: fig:wan-gen
+[[./img/mesh-designs/wan_node_generic.png]]
+
+To set the ethernet that will do the DHCP client to the ISP router
+there are 2 options.
+
+Option 1: in the quick setup, last part says what to do with
+interfaces (figure [[fig:quickdhcp]]). The interfaces have 3 selections:
+=Mesh=, =Lan= (DHCP server) and =WAN= (DHCP client).
+
+#+CAPTION: Option 1: Set DHCP client to interface with quick setup
+#+NAME: fig:quickdhcp
+[[./img/qMp-basics-scrot/quick_setup_interfaces.png]]
+
+Option 2: Figure [[fig:netset]] shows the screen that set the DHCP client
+interface, and there is no need to do a quick setup with the node.
+
+#+BEGIN_LATEX
+\noindent
+#+END_LATEX
+To arrive there, go to the menu clicking at:
+: OpenWRT / Node configuration / Network Settings
+alternatively:\\
+http://admin.qmp/cgi-bin/luci/qmp/configuration/network/
+
+#+CAPTION: Option 2: Set DHCP client to interface with network settings
+#+NAME: fig:netset
+[[./img/qMp-basics-scrot/network_settings.png]]
+
+To test that is working the DHCP client to the ISP router, check the
+IPv4 WAN Status, section Network. Figure [[fig:wan-status-on-detail]] shows a
+successful WAN connection. Figure [[fig:wan-status-off]] shows a
+unsuccessful WAN connection: there is no DHCP client or is not
+correctly connected.
+
+#+CAPTION: WAN status online
+#+NAME: fig:wan-status-on-detail
+[[./img/qMp-basics-scrot/status-wan_status_detail.png]]
+
+#+CAPTION: WAN status offline
+#+NAME: fig:wan-status-off
+[[./img/qMp-basics-scrot/wan_not_connected.png]]
+
+#+BEGIN_LATEX
+\noindent
+#+END_LATEX
+To arrive there, go to the menu clicking at:
+: qMp/Mesh / Mesh / Status
+alternatively:\\
+http://admin.qmp/cgi-bin/luci/qmp/status
+* Proposed qMp cloud node designs: General node design
+Figure [[fig:gen-node]] shows the elements of a simple node installation:
+A qMp node connected to its network and a 2.4 GHz wifi router as an
+Access Point that it is necessary to give wifi coverage inside the
+place.
+#+CAPTION: Network diagram generic node
+#+NAME: fig:gen-node
+[[./img/mesh-designs/generic_node.png]]
+* Making a panorama with Hugin
+With Hugin it is very easy to do panorama photos, and is free open
+source software [fn:45].
+
+1. How to do the photos? Take the same physical point and start doing
+   photos with 20% of overlap between them.
+2. Follow the steps in Hugin's program (Figure: [[fig:hugin]])
+   1. =1.Load images=, select all images in the folder it is wanted to
+      do a panorama.
+   2. =2.Align=.
+      - this takes a process to search for control points for give
+        sensation of continuity in the photo.
+      - if there is not enough control points, search
+        control points manually or do the photos again.
+   3. =3.Create panorama=: save a .pto and .tiff files in the folder with
+      all images.
+   #+CAPTION: Hugin
+   #+NAME: fig:hugin
+   [[./img/general/hugin.png]]
+3. Conversion of .tiff to .jpeg \\
+   If it is wanted to share the panorama.
+   : sudo apt-get install imagemagick
+   : convert pan.tiff pan.jpeg
+   An example is showed in figure [[fig:exhugin]]
+   #+CAPTION: Example of panorama using hugin
+   #+NAME: fig:exhugin
+   [[./img/santandreudeploy/llenguadoc.jpg]]
+
+* About monitoring
+Perform a monitoring of the network is important as a measure of
+quality assurance. Are presented 3 alternatives.
+** *From the guifi web*
+can be obtained the graphs. It helps to know if the device is up, its
+ping and the network traffic. Figure [[fig:snpservices]] shows how it
+looks like.
+
+#+CAPTION: Graph server in guifi.net
+#+NAME: fig:snpservices
+[[./img/general/snpservices.png]]
+
+It is required a qMp version with guifi package: =qMp-Guifi= should
+appear in the bin package name.
+
+The server part uses a package developed by guifi.net community called
+=snpservices=. For install it can be followed this guide [fn:48],
+basically, a Debian repository is obtained, it is installed the
+package and is set the id of the graph server (other parameters remain
+default). To obtain the id of the graph server create a service of
+type graph server in the guifi.net web. For example, the id of the
+graph server of Barcelona can be obtained from the URL:
+=http://guifi.net/en/node/55045=, and it is =55045=.
+
+qMp uses the package =mini_snmpd= [fn:49] configured to the guifi.net
+website. After creating the node and the device in the web, it
+generates the =unsolclic= file. Figure [[fig:qmpguifi]] shows how simple
+is: put there the URL of the device and apply.
+
+#+CAPTION: guifi.net menu in qMp firmware
+#+NAME: fig:qmpguifi
+[[./img/qMp-basics-scrot/qmpguifi.png]]
+** *munin*:
+For a GNU/Linux Debian 7 Wheezy server (apache 2.2)
+: sudo apt-get install munin
+by default it does monitoring of the server itself (localhost).
+
+For make the graphs available for every user [fn:47] in order to follow the
+Community Network model of open all network data change the
+following lines in =/etc/munin/apache.conf=:
+: Order allow,deny
+: Allow from localhost 127.0.0.0/8 ::1
+: Options None
+like so:
+: Order allow,deny
+: Allow from all
+: Options FollowSymLinks SymLinksIfOwnerMatch
+Apply the changes in the HTTP server:
+: # service apache2 restart
+
+Add qMp nodes for monitor them editing the file =/etc/munin/munin.conf=:
+#+begin_src conf
+[qMp-node1]
+    address 10.x.x.x
+    use_node_name yes
+[qMp-node2]
+    address 10.x.x.x
+    use_node_name yes
+#+end_src
+
+Apply the changes in the monitor (it will start appearing after few
+minutes):
+: # service munin-node restart
+The graphics are very similar to those of guifi, but provide more
+information. Except that there is an error with network traffic
+monitoring and is not provided.
+** *qmpsu*:
+At the moment, there is not a generic package of qmpsu for qMp networks,
+only for Sants Poblenou. More information see
+[[Situation of mesh networks in Barcelona]]. Figure [[fig:qmpsu]] shows how it
+looks like.
+
+#+CAPTION: qmpsu view
+#+NAME: fig:qmpsu
+[[./img/general/qmpsu.png]]
+* Footnotes
+[fn:1] http://bubforeurope.net
+
+[fn:2] Catalan: http://guifi.net/ca/BonesPractiquesUER
+
+[fn:3] http://www.catnix.net/en/speedtest
+
+[fn:4] http://speedtest.net
+
+[fn:5] http://testdevelocidad.es
+
+[fn:6] http://testvelocidad.eu/
+
+[fn:7] http://fw.qmp.cat/
+
+[fn:8] http://qmp.cat/Supported_devices
+
+[fn:9] https://www.youtube.com/watch?v=xIflE_-V-B4\#t=50s
+
+[fn:10] http://wiki.ubnt.com/Firmware_Recovery
+
+[fn:11] http://www.qmp.cat/\#Use-the-firmware
+
+[fn:12] tftp info: http://wiki.openwrt.org/doc/howto/generic.flashing.tftp
+
+[fn:13] http://en.wikipedia.org/wiki/Electrostatic_discharge
+
+[fn:14] http://dl.ubnt.com/datasheets/nanostationm/nsm_ds_web.pdf
+
+[fn:15] http://ubnt.com/downloads/rocketM5_DS.pdf
+
+[fn:16] http://blog.altermundi.net/article/completamos-el-enlace-de-50km/
+
+[fn:17] http://ubnt.com/downloads/datasheets/rocketdish/rd_ds_web.pdf
+
+[fn:18] http://ubnt.com/downloads/datasheets/nanobeam/NanoBeamM_DS.pdf
+
+[fn:19] http://dl.ubnt.com/AirMax5GSectors.pdf
+
+[fn:20] http://guifi.net/en/BCNLaFabra
+
+[fn:21] http://guifi.net/en/node/56604
+
+[fn:22] http://battlemesh.org/
+
+[fn:23] http://wiki.openwrt.org/toh/buyerguide
+
+[fn:24] http://en.wikipedia.org/wiki/IEEE_802.11n-2009
+
+[fn:25] http://en.wikipedia.org/wiki/IEEE_802.11a-1999
+
+[fn:26] http://en.wikipedia.org/wiki/IEEE_802.11g-2003
+
+[fn:27] http://en.wikipedia.org/wiki/IEEE_802.11b-1999
+
+[fn:31] not explicitly said in references, but started at the same
+time as qMp with puntcat foundation grant "Associació per a l'Expansió
+de la Xarxa Oberta": \\
+http://fundacio.cat/ca/projectes/ajuts-puntcat/guanyadors-2010 \\
+bmx6's starter Axel Neumann said: "The first usable code was tested at
+the WBMv3 [3rd battlemesh] in June 2010"
+
+[fn:32] http://fabraicoats.bcn.cat/en/
+
+[fn:33] http://www.poblenousensefils.net/
+
+[fn:34] http://guifisants.net/
+
+[fn:35] http://tomir.ac.upc.edu/qmpsu/index.php
+
+[fn:36] http://upf.edu
+
+[fn:37] http://upc.edu
+
+[fn:38] http://www.csuc.cat/en
+
+[fn:39] http://www.i2cat.net/en
+
+[fn:40] http://www.i2cat.net/en/projects/anella-cultural
+
+[fn:41] accept the commons of the Free, Open and Neutral Network
+
+[fn:42] at the moment there is no completed English
+translation. Spanish translation: http://guifi.net/es/ProcomunXOLN
+
+[fn:43] No English translation. Spanish translation: http://guifi.net/es/ProcomunXOLN
+
+[fn:44] http://guifi.net/en/barcelona
+
+[fn:45] http://hugin.sourceforge.net/
+
+[fn:46] LAN cable can make a length up to 100m if only is carrying data
+
+[fn:47] Solution for apache 2.2 and 2.4: http://stackoverflow.com/questions/9127802
+
+[fn:48] There is no English translation: http://ca.wiki.guifi.net/wiki/Servidor_de_gr%C3%A0fiques_1
+
+[fn:49] http://wiki.openwrt.org/doc/howto/snmp.server
+
+[fn:50] Internet Service Provider
+
+[fn:51] eth1 is ignored
+
+[fn:52] symmetric bandwidth
+
+[fn:53] https://wiki.confine-project.eu/testbeds:addnode
+
+[fn:54] Spanish:\\
+http://pirenelab.eu/v-estage-pirene-lab-27-29-setiembre-2013/
+
+[fn:55] http://bubforeurope.net/?q=node/333
+
+[fn:56] http://bubforeurope.net/?q=node/336
+
+[fn:57] http://www.tinc-vpn.org/
+
+[fn:58] Cultural section of Barcelona city council
+
+[fn:59] http://w110.bcn.cat/portal/site/Biblioteques?lang=en_GB
+
+[fn:60] Cultural section of Barcelona city council
+
+[fn:61] http://fabraicoats.bcn.cat/en/
+
+[fn:62] http://fabraicoats.bcn.cat/en/
+
+[fn:63] No English translation. Spanish translation: http://guifi.net/es/ProcomunXOLN
+
+[fn:65] 60 euro per month for 5Mbps of download, 1 Mbps of upload at
+50% of performance
+
+[fn:66] The text of this section will be send for publication to a
+neighborhood magazine
+
+[fn:28] https://github.com/pedro-nonfree/starting-community-networks-in-cities
+
+[fn:29] http://bubforeurope.net/?q=node/323
+
+[fn:30] http://creativecommons.org/licenses/by-sa/4.0/
+
+[fn:67] Catalan: http://www.barcelonalab.cat/ca/
+
+[fn:68] Catalan: http://www.barcelonalab.cat/ca/
+
+[fn:69] Catalan: http://www.barcelonalab.cat/ca/
+
+[fn:64] http://www.xarxaoberta.cat/en
