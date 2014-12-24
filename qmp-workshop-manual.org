@@ -4,7 +4,7 @@
 * Introduction
 The basic material to deploy qMp network networks.
 
-The radios used have Power over Ethernet (PoE) of 24V, it means that the electrical power and data of the radio goes through an ethernet cable. The blue cable in figure [[fig:poe]] is what is deployed into an outdoor place (typically rooftop or a balcony) where the qMp devices will be installed and takes the POE interface in PoE injector. The other interface in the PoE injector is LAN [fn:46] and can be placed to a PC or a switch/router if it is wanted to connect more PC's. Finally, the PoE injector requires standard electrical power. *Warning*: a PoE connection to a device that is not prepared to work with PoE 24V, for example an ethernet interface of a computer, can produce malfunction of its ethernet interface.
+The devices used have Power over Ethernet (PoE) of 24V, it means that the electrical power and data of the device goes through an ethernet cable. The blue cable in figure [[fig:poe]] is what is deployed into an outdoor place (typically rooftop or a balcony) where the qMp devices will be installed and takes the POE interface in PoE injector. The other interface in the PoE injector is LAN [fn:46] and can be placed to a PC or a switch/router if it is wanted to connect more PC's. Finally, the PoE injector requires standard electrical power. *Warning*: a PoE connection to a device that is not prepared to work with PoE 24V, for example an ethernet interface of a computer, can produce malfunction of its ethernet interface.
 
 #+CAPTION: PoE network diagram
 #+NAME: fig:poe
@@ -18,7 +18,7 @@ The radios used have Power over Ethernet (PoE) of 24V, it means that the electri
 - Crimp tool: to join rj45 connector to cable.
 - Cable tester (recommended): a unexpensive one can help to work quickly and reliably in the installation of cable.
 - Cable cutter: To take a segment of cable for a installation. Note: UTP cable is easier to cut than FTP.
-- Cable tie: To lock the cable & radio to a mast and other cables.
+- Cable tie: To lock the cable & device to a antenna pole and other cables.
 - Shopping cart or traveling bag with wheels (recommended): carry all the items needed.
 - Measure meter: measure accurately the length of cable needed (optional).
 * Installer basics: 5GHz devices
@@ -33,7 +33,7 @@ The devices selected are working in the 5 GHz band because 2.4GHz is widely used
 
  - Expensive :: between 100 and 300 euro.
 
-   - Rocket M5  :: [fn:15] Base station to put different kind of antennas.
+   - Rocket M5  :: [fn:15] Base station to put different kind of devices.
      - Rocket M5 + Sector Antenna (S) 90 or 120 deg :: [fn:19] when the need is to cover a sector region with constant coverage of 90 or 120 deg. There are High Gain (HG) and Mid Gain (MG) versions.
      - Rocket M5 + Dish (D) :: [fn:17] Longest distances (50km link [fn:16]).
 
@@ -105,7 +105,7 @@ alternatively:\\ http://admin.qmp/cgi-bin/luci/qmp/tools
 #+NAME: fig:bw-test
 [[./img/qMp-basics-scrot/test-bandwidth.png]]
 
-Figure [[fig:wifi-signal-rt]]. After the general scan, when there is a node candidate to do a durable connection, there is the need to analyse the quality of this link in real-time. This helps to select an optimised place to lock the antenna in the installation.
+Figure [[fig:wifi-signal-rt]]. After the general scan, when there is a node candidate to do a durable connection, there is the need to analyse the quality of this link in real-time. This helps to select an optimised place to lock the device in the installation.
 
 #+BEGIN_LATEX
 \noindent
@@ -308,9 +308,9 @@ Steps to flash a device with qMp firmware. It is assumed a GNU/Linux Ubuntu/Debi
 4. Disconnect the internet connection.
 5. Open a terminal and put:
    : $ ping 192.168.1.20
-   It will help to know when the antenna is in the reset mode.
+   It will help to know when the device is in the reset mode.
 6. Connect the equipments as shown in Figure [[fig:flashdiagram]].
-   #+CAPTION: Network Diagram to Flash Antenna
+   #+CAPTION: Network Diagram to Flash Device
    #+NAME: fig:flashdiagram
    [[./img/general/flashdiagram.jpg]]
 7. Configure the network following one of these options:
@@ -319,18 +319,18 @@ Steps to flash a device with qMp firmware. It is assumed a GNU/Linux Ubuntu/Debi
    2. *Terminal option*: 
       : $ sudo ip a a 192.168.1.25/24 dev eth0
 8. Reset the device following one of these options:
-   1. *Reset in the antenna option*: Disconnect the interface of the
-      antenna. Remove the antenna's lid. With one hand take an object with round toe, press and hold reset button (Figure [[fig:resetant]]) while with the other hand insert the ethernet cable to the interface in antenna.
-      #+CAPTION: Reset antenna
+   1. *Reset in the device option*: Disconnect the interface of the
+      device. Remove the device's lid. With one hand take an object with round toe, press and hold reset button (Figure [[fig:resetant]]) while with the other hand insert the ethernet cable to the interface in device.
+      #+CAPTION: Reset device
       #+NAME: fig:resetant
-      [[./img/general/reset-antenna.jpg]]
+      [[./img/general/reset-device.jpg]]
    2. *Reset in the PoE injector option*: Check if the device has
       PoE (Figure [[fig:resetpoe]]). Disconnect the POE interface in PoE injector. With one hand take an object with round toe, press and hold reset button while with the other hand insert the ethernet cable to the POE interface in PoE injector.
       #+CAPTION: Reset power injector
       #+NAME: fig:resetpoe
       [[./img/general/reset-injector.jpg]]
-9. Observe if the antenna start the reset mode needed for continue:
-   - *Antenna led option*: Wait until the led 1 and 3 change to 2 and
+9. Observe if the device start the reset mode needed for continue:
+   - *Device led option*: Wait until the led 1 and 3 change to 2 and
      4 cyclically. With this video resource it will give an idea of time and led colors involved in the process [fn:9].
    - *PC screen option*: the ping starts responding. The output of the
      =ping 192.168.1.20= should be something like:
@@ -348,9 +348,9 @@ Steps to flash a device with qMp firmware. It is assumed a GNU/Linux Ubuntu/Debi
     [ Transmission process ]
     : $ quit
 12. After about 5 minutes, the 4th led of the ramp (the most right led,
-    Figure [[fig:ledsantenna]]) is on, and not blinking. This is the moment to go the next step.
-    #+CAPTION: Led system in the antenna
-    #+NAME: fig:ledsantenna
+    Figure [[fig:ledsdevice]]) is on, and not blinking. This is the moment to go the next step.
+    #+CAPTION: Led system in the device
+    #+NAME: fig:ledsdevice
     [[./img/general/blinkingled.jpeg]]
 13. Reconfigure the network to do a DHCP client in ethernet port
     (Automatic IP) and try to connect again the PC with the device.
