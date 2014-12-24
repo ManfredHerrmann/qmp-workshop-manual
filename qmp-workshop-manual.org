@@ -4,7 +4,7 @@
 * Introduction
 The basic material to deploy qMp networks.
 
-The devices used have Power over Ethernet (PoE) of 24V, it means that the electrical power and data of the device goes through an ethernet cable. The blue cable in figure [[fig:poe]] is what is deployed into an outdoor place (typically rooftop or a balcony) where the qMp devices will be installed and takes the POE interface in PoE injector. The other interface in the PoE injector is LAN [fn:46] and can be placed to a PC or a switch/router if it is wanted to connect more PC's. Finally, the PoE injector requires standard electrical power. *Warning*: a PoE connection to a device that is not prepared to work with PoE 24V, for example an ethernet interface of a computer, can produce malfunction of its ethernet interface.
+The devices used have Power over Ethernet (PoE) of 24 V, it means that the electrical power and data of the device goes through an ethernet cable. The blue cable in figure [[fig:poe]] is what is deployed into an outdoor place (typically rooftop or a balcony) where the qMp devices will be installed and takes the PoE interface in PoE injector. The other interface in the PoE injector is LAN [fn:46] and can be placed to a PC or a switch/router if it is wanted to connect more PC's. Finally, the PoE injector requires standard electrical power. *Warning*: a PoE connection to a device that is not prepared to work with PoE 24 V, for example an ethernet interface of a computer, can produce malfunction of its ethernet interface.
 
 #+CAPTION: PoE network diagram
 #+NAME: fig:poe
@@ -21,8 +21,8 @@ The devices used have Power over Ethernet (PoE) of 24V, it means that the electr
 - Cable tie: To lock the cable & device to a antenna pole and other cables.
 - Shopping cart or traveling bag with wheels (recommended): carry all the items needed.
 - Measure meter: measure accurately the length of cable needed (optional).
-* Installer basics: 5GHz devices
-The devices selected are working in the 5 GHz band because 2.4GHz is widely used in cities and have more interferences. They are from Ubiquiti manufacturer and compatible with qMp firmware.
+* Installer basics: 5 GHz devices
+The devices selected are working in the 5 GHz band because 2.4 GHz is widely used in cities and have more interferences. They are from Ubiquiti manufacturer and compatible with qMp firmware.
 
  - Unexpensive :: around 70 euro.
 
@@ -325,7 +325,7 @@ Steps to flash a device with qMp firmware. It is assumed a GNU/Linux Ubuntu/Debi
       #+NAME: fig:resetant
       [[./img/general/reset-device.jpg]]
    2. *Reset in the PoE injector option*: Check if the device has
-      PoE (Figure [[fig:resetpoe]]). Disconnect the POE interface in PoE injector. With one hand take an object with round toe, press and hold reset button while with the other hand insert the ethernet cable to the POE interface in PoE injector.
+      PoE (Figure [[fig:resetpoe]]). Disconnect the PoE interface in PoE injector. With one hand take an object with round toe, press and hold reset button while with the other hand insert the ethernet cable to the PoE interface in PoE injector.
       #+CAPTION: Reset power injector
       #+NAME: fig:resetpoe
       [[./img/general/reset-injector.jpg]]
