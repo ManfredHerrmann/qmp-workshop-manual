@@ -2,7 +2,7 @@
 #+AUTHOR: guifi.net community
 
 * Introduction
-The basic material to deploy qMp network networks.
+The basic material to deploy qMp networks.
 
 The devices used have Power over Ethernet (PoE) of 24V, it means that the electrical power and data of the device goes through an ethernet cable. The blue cable in figure [[fig:poe]] is what is deployed into an outdoor place (typically rooftop or a balcony) where the qMp devices will be installed and takes the POE interface in PoE injector. The other interface in the PoE injector is LAN [fn:46] and can be placed to a PC or a switch/router if it is wanted to connect more PC's. Finally, the PoE injector requires standard electrical power. *Warning*: a PoE connection to a device that is not prepared to work with PoE 24V, for example an ethernet interface of a computer, can produce malfunction of its ethernet interface.
 
