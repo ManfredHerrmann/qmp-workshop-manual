@@ -2,7 +2,7 @@
 #+AUTHOR: guifi.net community
 
 * Introduction
-The basic material to deploy qMp cloud networks.
+The basic material to deploy qMp network networks.
 
 The radios used have Power over Ethernet (PoE) of 24V, it means that the electrical power and data of the radio goes through an ethernet cable. The blue cable in figure [[fig:poe]] is what is deployed into an outdoor place (typically rooftop or a balcony) where the qMp devices will be installed and takes the POE interface in PoE injector. The other interface in the PoE injector is LAN [fn:46] and can be placed to a PC or a switch/router if it is wanted to connect more PC's. Finally, the PoE injector requires standard electrical power. *Warning*: a PoE connection to a device that is not prepared to work with PoE 24V, for example an ethernet interface of a computer, can produce malfunction of its ethernet interface.
 
@@ -220,7 +220,7 @@ Note: qMp only save common settings after the upgrade, concretely:
 
 For other file changes, perform a backup before the upgrade.
 * qMp basics: Navigating inside the network
-Figure [[fig:net-nodes]] shows a screen that presents all the qMp nodes conforming the cloud. By clicking the blue spherical icon to the left of each node it is possible to obtain additional information about them. In particular, the network address announced by one node can be found under the =Gateways announced= label, and the IP of the node in the first address of that network. In the example shown in the figure, the network address is =10.1.56.96= and the IP of the qMp node is =10.1.56.97=.
+Figure [[fig:net-nodes]] shows a screen that presents all the qMp nodes conforming the network. By clicking the blue spherical icon to the left of each node it is possible to obtain additional information about them. In particular, the network address announced by one node can be found under the =Gateways announced= label, and the IP of the node in the first address of that network. In the example shown in the figure, the network address is =10.1.56.96= and the IP of the qMp node is =10.1.56.97=.
 
 #+BEGIN_LATEX
 \noindent
@@ -245,7 +245,7 @@ alternatively:\\ http://admin.qmp/cgi-bin/luci/qmp/mesh/graph
 #+CAPTION: Graph of the network
 #+NAME: fig:graph-network
 [[./img/qMp-basics-scrot/graph.png]]
-* Proposed qMp cloud node designs: WAN node design
+* Proposed qMp network node designs: WAN node design
 To build a WAN node, figure [[fig:wan-gen]] shows how the qMp node should be connected to the /mesh/ network (through wifi via bmx6 routing) and Internet (through ethernet to ISP [fn:50] router via DCHP client).
 
 It is recommended to use the device Nanostation M5 because it has two ethernet interfaces (eth0, eth1). With one can be made a DHCP server to connect to the qMp node with a laptop. And for the other ethernet, a DHCP client to the ISP router.
@@ -293,7 +293,7 @@ To test that is working the DHCP client to the ISP router, check the IPv4 WAN St
 To arrive there, go to the menu clicking at:
 : qMp/Mesh / Mesh / Status
 alternatively:\\ http://admin.qmp/cgi-bin/luci/qmp/status
-* Proposed qMp cloud node designs: General node design
+* Proposed qMp network node designs: General node design
 Figure [[fig:gen-node]] shows the elements of a simple node installation: A qMp node connected to its network and a 2.4 GHz wifi router as an Access Point that it is necessary to give wifi coverage inside the place.
 #+CAPTION: Network diagram generic node
 #+NAME: fig:gen-node
