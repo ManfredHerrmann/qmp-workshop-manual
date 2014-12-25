@@ -26,16 +26,16 @@ The devices selected are working in the 5 GHz band because 2.4 GHz is widely use
 
  - Unexpensive :: around 70 euro.
 
-   - NanoStation Loco M5 (NSLM5) :: Short distances (less than 1km). The connection with the other candidate node has an acceptable connection and there is no need to increase the power signal of wifi. It uses the same firmware as NanostationM5.
+   - NanoStation Loco M5 (NSLM5) :: Short distances (less than 1 km). The connection with the other candidate node has an acceptable connection and there is no need to increase the power signal of wifi. It uses the same firmware as NanostationM5.
    - Nanostation M5 (NSM5) :: [fn:14] If is needed a better connection to specific node.
-   - NanoBeam M5 (NBM5) different models :: [fn:18] When there is a long distance connection (more than 1km). Use the same firmware as NanostationM5.
+   - NanoBeam M5 (NBM5) different models :: [fn:18] When there is a long distance connection (more than 1 km).
    - XW series :: Are new versions of devices NSLM5, NSM5, etc. but with new processors. The first introduced was NBM5 as a replacement to NanoBridge M5 (now deprecated). This devices requires qMp 4 and is not stable yet. The rest of devices specified are AirMax (XM) and use qMp 3.1 (stable release).
 
  - Expensive :: between 100 and 300 euro.
 
    - Rocket M5  :: [fn:15] Base station to put different kind of devices.
-     - Rocket M5 + Sector Antenna (S) 90 or 120 deg :: [fn:19] when the need is to cover a sector region with constant coverage of 90 or 120 deg. There are High Gain (HG) and Mid Gain (MG) versions.
-     - Rocket M5 + Dish (D) :: [fn:17] Longest distances (50km link [fn:16]).
+     - Rocket M5 + Sector Antenna (S) 90 or 120 deg :: [fn:19] when the need is to cover a zone region with constant coverage of 90 or 120 deg from the device. There are High Gain (HG) and Mid Gain (MG) versions.
+     - Rocket M5 + Dish (D) :: [fn:17] Longest distances (50 km link [fn:16]).
 
 Summary of some relevant information at Table [[tab:devspec]]:
 #+CAPTION: Devices specifications
